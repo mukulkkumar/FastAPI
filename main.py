@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi import UploadFile, File
 
 app = FastAPI()
 
@@ -22,3 +23,8 @@ def greet(name: str):
 @app.post("/items/")
 def create_item(item: Item):
     return {"item": item}
+
+@app.post("/uploadfile/")
+async def upload_file(file: UploadFile = File(...)):
+    content = await file.read()
+    return {"filename": file.filename, "content_type": file.content_type, "size": len(content)}

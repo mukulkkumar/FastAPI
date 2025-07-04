@@ -13,7 +13,6 @@
 
 ```
 pip install fastapi
-
 pip install "uvicorn[standard]"  # to run the server
 ```
 
@@ -25,3 +24,10 @@ pip install "uvicorn[standard]"  # to run the server
 ### *Swagger UI:*
 
 `http://127.0.0.1:8000/docs`
+
+
+### *To run test cases*
+```
+pip install pytest
+pytest
+```
