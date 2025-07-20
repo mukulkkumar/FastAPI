@@ -10,6 +10,7 @@ SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+# Pytest fixture to provide a fresh database for each test
 @pytest.fixture(scope="function")
 def db():
     Base.metadata.create_all(bind=engine)
@@ -19,6 +20,7 @@ def db():
     Base.metadata.drop_all(bind=engine)
 
 
+# Test creating a new user
 def test_create_user(db):
     user_data = UserCreate(username="testuser", email="test@example.com", password="secret")
     user = crud.create_user(db, user_data)
@@ -26,6 +28,7 @@ def test_create_user(db):
     assert user.email == "test@example.com"
 
 
+# Test retrieving a user by ID
 def test_get_user(db):
     user_data = UserCreate(username="testuser2", email="user2@example.com", password="pass")
     user = crud.create_user(db, user_data)
@@ -33,6 +36,7 @@ def test_get_user(db):
     assert fetched.username == "testuser2"
 
 
+# Test updating a user's information
 def test_update_user(db):
     user_data = UserCreate(username="testuser3", email="user3@example.com", password="pass")
     user = crud.create_user(db, user_data)
@@ -42,6 +46,7 @@ def test_update_user(db):
     assert updated.email == "updated@example.com"
 
 
+# Test deleting a user
 def test_delete_user(db):
     user_data = UserCreate(username="testuser4", email="user4@example.com", password="pass")
     user = crud.create_user(db, user_data)
@@ -50,6 +55,7 @@ def test_delete_user(db):
     assert crud.get_user(db, user.id) is None
 
 
+# Test retrieving a list of users
 def test_get_users(db):
     users = [
         UserCreate(username=f"user{i}", email=f"user{i}@example.com", password="pass")
